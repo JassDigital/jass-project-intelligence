@@ -566,7 +566,7 @@ async function analyzeRepository(context: RepoContext) {
 
   const readme = await readRepoFile(context, "README.md");
 
-  const paths = new Set(
+  const paths = new Set<string>(
     files.map((item: any) => String(item.path).toLowerCase())
   );
 
@@ -611,16 +611,16 @@ async function analyzeRepository(context: RepoContext) {
     )
   );
 
-  const hasTests = [...paths].some((path) =>
+  const hasTests = [...paths].some((path: string) =>
     /(^|\/)(test|tests|__tests__)(\/|$)|(\.test\.|\.spec\.)/i.test(path)
   );
 
   const hasDocs =
-    [...paths].some((path) =>
+    [...paths].some((path: string) =>
       /(^|\/)(docs|documentation)(\/|$)/i.test(path)
     ) || readme.length > 1500;
 
-  const hasCi = [...paths].some((path) =>
+  const hasCi = [...paths].some((path: string) =>
     /^\.github\/workflows\/.+\.(yml|yaml)$/i.test(path)
   );
 
@@ -628,7 +628,7 @@ async function analyzeRepository(context: RepoContext) {
   const dependencies = extractDependencies(packageJson);
   const outdated = await fetchOutdated(context, packageJson, dependencies);
 
-  const languageEntries = Object.entries(languages);
+  const languageEntries = Object.entries(languages as Record<string, number>);
   const totalLanguageBytes = languageEntries.reduce(
     (sum, [, bytes]) => sum + Number(bytes),
     0
@@ -772,7 +772,7 @@ export async function POST(request: NextRequest) {
 
       const contexts = urls.map(parseGitHubUrl);
       const results = await Promise.all(
-        contexts.map((context) => analyzeRepository(context))
+        contexts.map((context: RepoContext) => analyzeRepository(context))
       );
 
       return NextResponse.json({
@@ -810,3 +810,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+
+
+

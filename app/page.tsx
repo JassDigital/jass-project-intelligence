@@ -63,12 +63,18 @@ type AnalysisData = {
   architecture: {
     name: string;
     type: string;
+    stack: string[];
     children: any[];
   };
   dependencies: Dependency[];
   packageManager: string;
   packageScripts: Record<string, string>;
   readme: string;
+  readmeIntelligence: {
+    quality: number;
+    wordCount: number;
+    sections: { name: string; found: boolean }[];
+  };
   health: {
     overall: number;
     documentation: number;
@@ -1383,3 +1389,6 @@ function healthLabel(score: number) {
 
 
 /* v1.2 component-local utility classes */
+
+
+
